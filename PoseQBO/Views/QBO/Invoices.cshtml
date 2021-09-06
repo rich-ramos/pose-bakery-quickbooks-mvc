@@ -1,0 +1,6 @@
+﻿@model IEnumerable<Invoice>
+
+@foreach (var i in Model)
+{
+    <partial name="_InvoiceSummaryPartial" for="@i" />
+}

@@ -1,0 +1,33 @@
+﻿<div class="card">
+    <div class="card-body">
+        <h5 class="card-title text-center">Invoices</h5>
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a id="name-link" class="nav-link invoice-nav-link" href="#">
+                    Name
+                </a>
+            </li>
+            <li class="nav-item">
+                <a id="date-link" class="nav-link invoice-nav-link active" href="#">
+                    Date
+                </a>
+            </li>
+        </ul>
+
+        <form id="invoiceForm" class="m-3" asp-action="InvoicesByDateRange" method="post">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="startDate">Start Date</label>
+                    <input type="date" name="startDate" class="form-control" />
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="endDate">End Date</label>
+                    <input type="date" name="endDate" class="form-control" />
+                </div>
+            </div>
+            <div class="text-center m-2">
+                <button class="btn btn-primary text-center" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>

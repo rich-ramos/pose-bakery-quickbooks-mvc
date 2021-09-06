@@ -1,0 +1,18 @@
+﻿<div class="jumbotron">
+    <h1>Pose Sample Application</h1>
+    <h2>Demonstrates Connect to QuickBooks flow and API</h2>
+</div>
+
+<a asp-action="Login" asp-controller="Connect" asp-route-connect="Connect to QuickBooks">
+    <div>
+        <input class="btn btn-sm btn-primary" type="submit" name="connectBtn" value="Connect to QuickBooks" />
+    </div>
+</a>
+
+@if ((string)ViewData["Configuration"] == "NullValue")
+{
+    <p style="font-weight: normal; color: red">
+        <br />
+        Please verift the Client Id and Client Secret value in appsettings.json
+    </p>
+}

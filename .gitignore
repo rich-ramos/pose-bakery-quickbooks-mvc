@@ -1,0 +1,12 @@
+# Application Configuration Files
+Properties/
+appsettings**
+PoseQBO.csproj.user
+
+# Folders
+.vs/
+obj/
+bin/
+
+# LocalDB
+*.db
