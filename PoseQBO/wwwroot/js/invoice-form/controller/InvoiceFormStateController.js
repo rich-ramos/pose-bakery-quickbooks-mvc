@@ -8,7 +8,7 @@ class InvoiceFormStateController {
     constructor() {
         this.form = document.querySelector('#invoiceForm');
         this.invoiceNavLinks = document.querySelectorAll('.invoice-nav-link');
-        this.InvoiceFormState = new InvoiceFormState();
+        this.invoiceFormState = new InvoiceFormState();
         this.events();
     }
 
@@ -28,11 +28,11 @@ class InvoiceFormStateController {
 
     changeFormState(id) {
         if (id == this.linkId) {
-            const nameAndDateInvoiceFormStateDecorator = new SearchByNameAndDateInvoiceFormStateDecorator(this.InvoiceFormState);
+            const nameAndDateInvoiceFormStateDecorator = new SearchByNameAndDateInvoiceFormStateDecorator(this.invoiceFormState);
             this.form.innerHTML = nameAndDateInvoiceFormStateDecorator.State;
             this.form.setAttribute('action', 'QBO/InvoicesByNameAndDate');
         } else {
-            const dateRangeInvoiceFormStateDecorator = new SearchByDateRangeInvoiceFormStateDecorator(this.InvoiceFormState);
+            const dateRangeInvoiceFormStateDecorator = new SearchByDateRangeInvoiceFormStateDecorator(this.invoiceFormState);
             this.form.innerHTML = dateRangeInvoiceFormStateDecorator.State;
             this.form.setAttribute('action', 'QBO/InvoicesByDateRange');
         }
