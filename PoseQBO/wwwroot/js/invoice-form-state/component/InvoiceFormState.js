@@ -1,7 +1,5 @@
 ﻿import FormStateBase from './base/FormStateBase.js';
 
-class InvoiceFormState extends FormStateBase {
-
-}
+class InvoiceFormState extends FormStateBase { }
 
 export default InvoiceFormState;

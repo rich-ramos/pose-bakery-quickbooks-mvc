@@ -1,12 +1,12 @@
 ﻿class FormStateBase {
-    #state
+    state
 
     get State() {
-        return this.#state;
+        return this.state;
     }
 
     set State(state) {
-        this.#state = state;
+        this.state = state;
     }
 }
 

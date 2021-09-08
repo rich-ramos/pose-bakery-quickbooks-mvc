@@ -1,14 +1,18 @@
 ﻿import InvoiceFormState from "../component/InvoiceFormState.js";
+import FormProcessor from "../../modules/FormProcessor.js";
 import SearchByDateRangeInvoiceFormStateDecorator from "../decorators/SearchByDateRangeInvoiceFormStateDecorator.js";
 import SearchByNameAndDateInvoiceFormStateDecorator from "../decorators/SearchByNameAndDateInvoiceFormStateDecorator.js";
 
 class InvoiceFormStateController {
-    linkId = 'name-link';
+    #linkId = 'name-link';
+    #nameAndDateActionAttributeValue = 'QBO/InvoicesByNameAndDate';
+    #dateRangeActionAttributeValue = 'QBO/InvoicesByDateRange';
 
     constructor() {
         this.form = document.querySelector('#invoiceForm');
-        this.invoiceNavLinks = document.querySelectorAll('.invoice-nav-link');
         this.invoiceFormState = new InvoiceFormState();
+        this.formProcessor = null;
+        this.invoiceNavLinks = document.querySelectorAll('.invoice-nav-link');
         this.events();
     }
 
@@ -27,14 +31,16 @@ class InvoiceFormStateController {
     }
 
     changeFormState(id) {
-        if (id == this.linkId) {
+        if (id == this.#linkId) {
             const nameAndDateInvoiceFormStateDecorator = new SearchByNameAndDateInvoiceFormStateDecorator(this.invoiceFormState);
-            this.form.innerHTML = nameAndDateInvoiceFormStateDecorator.State;
-            this.form.setAttribute('action', 'QBO/InvoicesByNameAndDate');
+            this.formProcessor = new FormProcessor(this.form, nameAndDateInvoiceFormStateDecorator);
+            this.formProcessor.setFormState();
+            this.formProcessor.setActionAttributeValue(this.#nameAndDateActionAttributeValue);
         } else {
             const dateRangeInvoiceFormStateDecorator = new SearchByDateRangeInvoiceFormStateDecorator(this.invoiceFormState);
-            this.form.innerHTML = dateRangeInvoiceFormStateDecorator.State;
-            this.form.setAttribute('action', 'QBO/InvoicesByDateRange');
+            this.formProcessor = new FormProcessor(this.form, dateRangeInvoiceFormStateDecorator);
+            this.formProcessor.setFormState();
+            this.formProcessor.setActionAttributeValue(this.#dateRangeActionAttributeValue);
         }
     }
 }
