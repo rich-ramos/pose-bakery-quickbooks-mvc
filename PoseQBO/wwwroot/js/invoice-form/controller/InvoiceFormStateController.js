@@ -1,6 +1,6 @@
 ﻿import InvoiceFormState from "../component/InvoiceFormState.js";
 import SearchByDateRangeInvoiceFormStateDecorator from "../decorators/SearchByDateRangeInvoiceFormStateDecorator.js";
-import SearchByNameInvoiceFormStateDecorator from "../decorators/SearchByNameInvoiceFormStateDecorator.js";
+import SearchByNameAndDateInvoiceFormStateDecorator from "../decorators/SearchByNameAndDateInvoiceFormStateDecorator.js";
 
 class InvoiceFormStateController {
     linkId = 'name-link';
@@ -28,11 +28,13 @@ class InvoiceFormStateController {
 
     changeFormState(id) {
         if (id == this.linkId) {
-            const nameDecorator = new SearchByNameInvoiceFormStateDecorator(this.InvoiceFormState);
-            this.form.innerHTML = nameDecorator.State;
+            const nameAndDateInvoiceFormStateDecorator = new SearchByNameAndDateInvoiceFormStateDecorator(this.InvoiceFormState);
+            this.form.innerHTML = nameAndDateInvoiceFormStateDecorator.State;
+            this.form.setAttribute('action', 'QBO/InvoicesByNameAndDate');
         } else {
-            const dateDecorator = new SearchByDateRangeInvoiceFormStateDecorator(this.InvoiceFormState);
-            this.form.innerHTML = dateDecorator.State;
+            const dateRangeInvoiceFormStateDecorator = new SearchByDateRangeInvoiceFormStateDecorator(this.InvoiceFormState);
+            this.form.innerHTML = dateRangeInvoiceFormStateDecorator.State;
+            this.form.setAttribute('action', 'QBO/InvoicesByDateRange');
         }
     }
 }
