@@ -1,7 +1,7 @@
-﻿import InvoiceFormState from "../component/InvoiceFormState.js";
-import FormProcessor from "../../modules/FormProcessor.js";
-import SearchByDateRangeInvoiceFormStateDecorator from "../decorators/SearchByDateRangeInvoiceFormStateDecorator.js";
-import SearchByNameAndDateInvoiceFormStateDecorator from "../decorators/SearchByNameAndDateInvoiceFormStateDecorator.js";
+﻿import InvoiceFormState from "../invoice-form-state/component/InvoiceFormState.js";
+import FormProcessor from "./FormProcessor.js";
+import SearchByDateRangeInvoiceFormStateDecorator from "../invoice-form-state/decorators/SearchByDateRangeInvoiceFormStateDecorator.js";
+import SearchByNameAndDateInvoiceFormStateDecorator from "../invoice-form-state/decorators/SearchByNameAndDateInvoiceFormStateDecorator.js";
 
 class InvoiceFormStateController {
     #linkId = 'name-link';

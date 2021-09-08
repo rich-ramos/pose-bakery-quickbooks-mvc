@@ -1,3 +1,3 @@
-﻿import InvoiceFormStateController from './controller/InvoiceFormStateController.js';
+﻿import InvoiceFormStateController from '../modules/InvoiceFormStateController.js';
 
 new InvoiceFormStateController();
