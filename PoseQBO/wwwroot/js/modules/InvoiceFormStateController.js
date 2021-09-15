@@ -5,8 +5,8 @@ import SearchByNameAndDateInvoiceFormStateDecorator from "../invoice-form-state/
 
 class InvoiceFormStateController {
     #linkId = 'name-link';
-    #nameAndDateActionAttributeValue = 'QBO/InvoicesByNameAndDate';
-    #dateRangeActionAttributeValue = 'QBO/InvoicesByDateRange';
+    #nameAndDateActionAttributeValue = '/QBO/InvoicesByNameAndDate';
+    #dateRangeActionAttributeValue = '/QBO/InvoicesByDateRange';
 
     constructor() {
         this.form = document.querySelector('#invoiceForm');
