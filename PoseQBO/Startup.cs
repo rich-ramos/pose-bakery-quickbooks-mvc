@@ -42,6 +42,7 @@ namespace PoseQBO
 
             services.AddTransient<IApiServices, QBOApiServices>();
             services.AddTransient<IInvoiceServices, QBOInvoiceServices>();
+            services.AddTransient<ICustomerServices, QBOCustomerServices>();
             services.Configure<OAuth2Keys>(Configuration.GetSection("OAuth2Keys"));
 
             services.AddSingleton(provider => Configuration);
