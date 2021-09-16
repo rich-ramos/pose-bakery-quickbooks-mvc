@@ -10,10 +10,12 @@ namespace PoseQBO.Controllors
     public class QBOController : Controller
     {
         private readonly IInvoiceServices _invoiceServices;
+        private readonly ICustomerServices _customerServices;
 
-        public QBOController(IInvoiceServices invoiceServices)
+        public QBOController(IInvoiceServices invoiceServices, ICustomerServices customerServices)
         {
             _invoiceServices = invoiceServices;
+            _customerServices = customerServices;
         }
 
         public IActionResult Index()
@@ -27,7 +29,14 @@ namespace PoseQBO.Controllors
             return View("Invoices", invoices);
         }
 
-        public async Task<IActionResult> InvoicesByDateRange(string startDate, string endDate)
+        public async Task<IActionResult> NameAndDateRangeInvoices(string companyName, string startDate, string endDate)
+        {
+            var customerId = await _customerServices.GetCustomerIdAsync(companyName);
+            var invoices = await _invoiceServices.GetInvoicesByIdAndDateRangeAsync(customerId, startDate, endDate);
+            return View("Invoices", invoices);
+        }
+
+        public async Task<IActionResult> DateRangeInvoices(string startDate, string endDate)
         {
             var invoices = await _invoiceServices.GetInvoicesByDateRangeAsync(startDate, endDate);
             return View("Invoices", invoices);
