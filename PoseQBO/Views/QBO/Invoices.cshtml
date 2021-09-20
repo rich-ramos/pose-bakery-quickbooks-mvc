@@ -1,6 +1,21 @@
-﻿@model IEnumerable<Invoice>
+﻿@model InvoicesViewModel
 
-@foreach (var i in Model)
-{
-    <partial name="_InvoiceSummaryPartial" for="@i" />
+@section invoices {
+    <div class="card">
+        <div class="card-header text-center bg-info">
+            Invoices for
+            <span>@Model.StartDate - @Model.EndDate</span>
+        </div>
+        <div class="card-body">
+            <div class="row row-cols-1 row-cols-md-4">
+                @foreach (var invoice in Model.Invoices)
+                {
+                    <partial name="_InvoiceSummaryPartial" for="@invoice" />
+                }
+            </div>
+        </div>
+        <div class="card-footer bg-info">
+            Total:
+        </div>
+    </div>
 }

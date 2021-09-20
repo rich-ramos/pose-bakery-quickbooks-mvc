@@ -1,12 +1,36 @@
 ﻿@model Invoice
 
-<div class="card card-outline-primary m-1 p-1">
-    <div class="bg-faded p-1">
-        <h4>
+<div class="col mb-4">
+    <div class="card h-100">
+        <div class="card-header text-center">
             @Model.CustomerRef.name
-            <span class="badge badge-pill badge-primary">
-                <small>@Model.Line.FirstOrDefault().Amount</small>
-            </span>
-        </h4>
+        </div>
+        <div class="card-body">
+            <table class="table table-borderless table-striped">
+                <thead>
+                    <tr>
+                        <th>Quantity</th>
+                        <th>Item</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var line in Model.Line)
+                    {
+                        <tr>
+                            @if (line.AnyIntuitObject is SalesItemLineDetail itemLine)
+                            {
+                                <td>
+                                    @(itemLine.Qty.ToString() ?? "0")
+                                </td>
+
+                                <td>
+                                    @itemLine.ItemRef.name
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

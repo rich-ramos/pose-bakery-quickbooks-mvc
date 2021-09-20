@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PoseQBO.Models.ViewModels;
 using PoseQBO.Services.QBO.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -38,8 +39,13 @@ namespace PoseQBO.Controllors
 
         public async Task<IActionResult> DateRangeInvoices(string startDate, string endDate)
         {
-            var invoices = await _invoiceServices.GetInvoicesByDateRangeAsync(startDate, endDate);
-            return View("Invoices", invoices);
+            var invoicesViewModel = new InvoicesViewModel
+            {
+                Invoices = await _invoiceServices.GetInvoicesByDateRangeAsync(startDate, endDate),
+                StartDate = startDate,
+                EndDate = endDate
+            };
+            return View("Invoices", invoicesViewModel);
         }
     }
 }
