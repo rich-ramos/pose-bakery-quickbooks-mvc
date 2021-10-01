@@ -40,6 +40,8 @@ namespace PoseQBO
                 options.UseSqlite(Configuration.GetConnectionString("DBConnectionString"));
             });
 
+            services.AddDistributedMemoryCache();
+
             services.AddTransient<IApiServices, QBOApiServices>();
             services.AddTransient<IInvoiceServices, QBOInvoiceServices>();
             services.AddTransient<ICustomerServices, QBOCustomerServices>();
