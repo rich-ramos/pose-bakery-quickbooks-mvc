@@ -3,11 +3,11 @@
 <div class="col mb-4">
     <div class="card h-100">
         <div class="card-header text-center">
-            @Model.CustomerRef.name
+            <h3 class="font-weight-normal">@Model.CustomerRef.name</h3>
         </div>
         <div class="card-body">
             <table class="table table-borderless table-striped">
-                <thead>
+                <thead class="thead-dark">
                     <tr>
                         <th>Quantity</th>
                         <th>Item</th>
@@ -31,6 +31,13 @@
                     }
                 </tbody>
             </table>
+        </div>
+        <div class="ml-1 px-3 py-3">
+            <a href="#" class="card-link">View Invoice</a>
+        </div>
+        <div class="card-footer">
+            <span class="h5">Create Time</span>
+            <div>@Model.MetaData.CreateTime</div>
         </div>
     </div>
 </div>

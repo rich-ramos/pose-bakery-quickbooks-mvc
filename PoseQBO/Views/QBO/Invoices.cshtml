@@ -1,21 +1,41 @@
 ﻿@model InvoicesViewModel
 
 @section invoices {
-    <div class="card">
+    <div class="card mt-n3">
         <div class="card-header text-center bg-info">
-            Invoices for
-            <span>@Model.StartDate - @Model.EndDate</span>
+            <span class="h3">Invoices</span>
+            <div class="h4">From: @Model.StartDate To: @Model.EndDate</div>
         </div>
         <div class="card-body">
-            <div class="row row-cols-1 row-cols-md-4">
+            <div class="row row-cols-1 row-cols-md-5">
                 @foreach (var invoice in Model.Invoices)
                 {
                     <partial name="_InvoiceSummaryPartial" for="@invoice" />
                 }
             </div>
         </div>
-        <div class="card-footer bg-info">
-            Total:
+        <div class="card-footer">
+            <div class="container">
+                <h2>Total</h2>
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Quantity</th>
+                            <th>Item</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var kvp in Model.ItemByQuantity)
+
+                        {
+                            <tr>
+                                <td>@kvp.Value</td>
+                                <td>@kvp.Key</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 }
