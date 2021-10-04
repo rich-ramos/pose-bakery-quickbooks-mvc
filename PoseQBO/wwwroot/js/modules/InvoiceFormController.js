@@ -36,18 +36,19 @@
         }
     }
 
-    #addClickEventListenerToFormFields(invalidFormFields) {
-        invalidFormFields.forEach((invalidFromField) => {
-            invalidFromField.addEventListener('click', (e) => this.handleClick(e));
-        });
-    }
-
     handleClick(e) {
         const formFieldElement = e.target;
         if (formFieldElement.classList.contains(this.#formControlErrorClass)) {
             formFieldElement.classList.remove(this.#formControlErrorClass)
         }
     }
+
+    #addClickEventListenerToFormFields(invalidFormFields) {
+        invalidFormFields.forEach((invalidFromField) => {
+            invalidFromField.addEventListener('click', (e) => this.handleClick(e));
+        });
+    }
+
 
     #clearInvalidFromFieldsArray() {
         this.invalidFormFields.length = 0;
