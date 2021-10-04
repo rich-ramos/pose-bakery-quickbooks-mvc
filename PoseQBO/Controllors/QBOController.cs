@@ -35,14 +35,24 @@ namespace PoseQBO.Controllors
             return View("Invoices", invoices);
         }
 
-        public async Task<IActionResult> NameAndDateRangeInvoices(string companyName, string startDate, string endDate)
+        public async Task<IActionResult> Invoice(string id, string returnUrl)
+        {
+            var invoice = await _invoiceServices.GetInvoiceAsync(id);
+            return View(new InvoiceViewModel
+            {
+                Invoice = invoice,
+                ReturnUrl = returnUrl
+            });
+        }
+
+        public async Task<IActionResult> InvoicesByNameAndDateRange(string companyName, string startDate, string endDate)
         {
             var customerId = await _customerServices.GetCustomerIdAsync(companyName);
             var invoices = await _invoiceServices.GetInvoicesByIdAndDateRangeAsync(customerId, startDate, endDate);
             return View("Invoices", invoices);
         }
 
-        public async Task<IActionResult> DateRangeInvoices(string startDate, string endDate)
+        public async Task<IActionResult> InvoicesByDateRange(string startDate, string endDate)
         {
             var cache = HttpContext.RequestServices.GetService<IDistributedCache>();
             string cacheKey = $"invoices_{startDate}-{endDate}";
