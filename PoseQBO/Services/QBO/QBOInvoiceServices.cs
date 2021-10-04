@@ -12,6 +12,7 @@ namespace PoseQBO.Services.QBO
     {
         private readonly IApiServices _apiServices;
         private IEnumerable<Invoice> _invoices;
+        private Invoice _invoice;
 
         public QBOInvoiceServices(IApiServices services)
         {
@@ -28,6 +29,21 @@ namespace PoseQBO.Services.QBO
             });
 
             return _invoices;
+        }
+
+        public async Task<Invoice> GetInvoiceAsync(string id)
+        {
+            if (_invoice.Id != id)
+            {
+                await _apiServices.ApiCall(context =>
+                {
+                    var queryService = new QueryService<Invoice>(context);
+                    var query = $"Select * From Invoice Where id = \'{id}\'";
+                    _invoice = queryService.ExecuteIdsQuery(query).FirstOrDefault();
+                });
+            }
+
+            return _invoice;
         }
 
         public async Task<IEnumerable<Invoice>> GetInvoicesByDateRangeAsync(string startDate, string endDate)
