@@ -1,7 +1,6 @@
 ﻿using Intuit.Ipp.Data;
 using Intuit.Ipp.QueryFilter;
 using PoseQBO.Services.QBO.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,21 +18,9 @@ namespace PoseQBO.Services.QBO
             _apiServices = services;
         }
 
-        public async Task<IEnumerable<Invoice>> GetInvoicesAsync()
-        {
-            await _apiServices.ApiCall(context =>
-            {
-                var queryService = new QueryService<Invoice>(context);
-                var query = "Select * From Invoice";
-                _invoices = queryService.ExecuteIdsQuery(query).ToList();
-            });
-
-            return _invoices;
-        }
-
         public async Task<Invoice> GetInvoiceAsync(string id)
         {
-            if (_invoice.Id != id)
+            if (_invoice?.Id != id)
             {
                 await _apiServices.ApiCall(context =>
                 {
