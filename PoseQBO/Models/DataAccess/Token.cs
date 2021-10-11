@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PoseQBO.Models.Dal
+namespace PoseQBO.Models.DataAccess
 {
     public class Token
     {
