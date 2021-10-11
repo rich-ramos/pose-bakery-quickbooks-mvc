@@ -1,0 +1,42 @@
+﻿@model InvoiceViewModel
+
+<div class="card">
+    <div class="card-header text-center">
+        <h3 class="font-weight-normal">@Model.Invoice.CustomerRef.name</h3>
+    </div>
+    <div class="card-body">
+        <table class="table table-borderless table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Quantity</th>
+                    <th>Item</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var line in Model.Invoice.Line)
+                {
+                    <tr>
+                        @if (line.AnyIntuitObject is SalesItemLineDetail itemLine)
+                        {
+                            <td>
+                                @(itemLine.Qty.ToString() ?? "0")
+                            </td>
+
+                            <td>
+                                @itemLine.ItemRef.name
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer">
+        <span class="h5">Create Time</span>
+        <div>@Model.Invoice.MetaData.CreateTime</div>
+    </div>
+</div>
+
+<div class="text-left">
+    <a class="btn btn-primary" href="@Model.ReturnUrl">Back To Invoices</a>
+</div>
