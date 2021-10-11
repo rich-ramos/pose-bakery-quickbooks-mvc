@@ -6,12 +6,10 @@ using Intuit.Ipp.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using PoseQBO.Models;
-using PoseQBO.Models.Dal;
+using PoseQBO.Models.DataAccess;
 using PoseQBO.Services.QBO.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace PoseQBO.Services.QBO

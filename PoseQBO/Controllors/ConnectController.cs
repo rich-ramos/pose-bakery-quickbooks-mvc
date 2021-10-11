@@ -2,8 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using PoseQBO.Models;
-using PoseQBO.Models.Dal;
-using System;
+using PoseQBO.Models.DataAccess;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
