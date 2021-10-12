@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -10,7 +6,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PoseQBO.Models;
-using PoseQBO.Models.Dal;
+using PoseQBO.Models.DataAccess;
+using PoseQBO.Services.Caching;
+using PoseQBO.Services.Caching.Interfaces;
+using PoseQBO.Services.Formatters;
 using PoseQBO.Services.QBO;
 using PoseQBO.Services.QBO.Interfaces;
 
@@ -42,9 +41,11 @@ namespace PoseQBO
 
             services.AddDistributedMemoryCache();
 
-            services.AddTransient<IApiServices, QBOApiServices>();
-            services.AddTransient<IInvoiceServices, QBOInvoiceServices>();
-            services.AddTransient<ICustomerServices, QBOCustomerServices>();
+            services.AddScoped<IApiServices, QBOApiServices>();
+            services.AddScoped<IInvoiceServices, QBOInvoiceServices>();
+            services.AddScoped<ICustomerServices, QBOCustomerServices>();
+            services.AddScoped<IInvoiceCacheService, MemoryInvoiceCacheService>();
+            services.AddScoped<InvoicesFormatter>();
             services.Configure<OAuth2Keys>(Configuration.GetSection("OAuth2Keys"));
 
             services.AddSingleton(provider => Configuration);
