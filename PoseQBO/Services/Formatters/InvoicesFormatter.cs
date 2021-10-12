@@ -29,10 +29,10 @@ namespace PoseQBO.Services.Formatters
             }
         }
 
-        public IEnumerable<Invoice> Deserialize(byte[] serializedInvoices)
+        public IEnumerable<Invoice> Deserialize(byte[] invoiceDate)
         {
             IEnumerable<Invoice> invoices;
-            using (_memoryStream = new MemoryStream(serializedInvoices))
+            using (_memoryStream = new MemoryStream(invoiceDate))
             {
                 return invoices = (IEnumerable<Invoice>)_binaryFormatter.Deserialize(_memoryStream);
             }
