@@ -1,6 +1,6 @@
 ﻿@model InvoiceViewModel
 
-<div class="card">
+<div class="card mb-2">
     <div class="card-header text-center">
         <h3 class="font-weight-normal">@Model.Invoice.CustomerRef.name</h3>
     </div>
@@ -37,6 +37,6 @@
     </div>
 </div>
 
-<div class="text-left">
+<div>
     <a class="btn btn-primary" href="@Model.ReturnUrl">Back To Invoices</a>
 </div>
