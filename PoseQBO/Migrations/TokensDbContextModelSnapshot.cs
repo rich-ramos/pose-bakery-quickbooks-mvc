@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using PoseQBO.Models.Dal;
+using PoseQBO.Models.DataAccess;
 
 namespace PoseQBO.Migrations
 {
