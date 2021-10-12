@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using PoseQBO.Services.Caching.Interfaces;
+using PoseQBO.Services.Formatters;
 
 namespace PoseQBO.Controllors
 {
@@ -17,11 +19,15 @@ namespace PoseQBO.Controllors
     {
         private readonly IInvoiceServices _invoiceServices;
         private readonly ICustomerServices _customerServices;
+        private readonly IInvoiceCacheService _invoiceCacheService;
+        private readonly InvoicesFormatter _invoicesFormatter;
 
-        public QBOController(IInvoiceServices invoiceServices, ICustomerServices customerServices)
+        public QBOController(IInvoiceServices invoiceServices, ICustomerServices customerServices, IInvoiceCacheService invoiceCacheService, InvoicesFormatter invoicesFormatter)
         {
             _invoiceServices = invoiceServices;
             _customerServices = customerServices;
+            _invoiceCacheService = invoiceCacheService;
+            _invoicesFormatter = invoicesFormatter;
         }
 
         public IActionResult Index()
@@ -29,20 +35,26 @@ namespace PoseQBO.Controllors
             return View("QBO");
         }
 
-        public async Task<IActionResult> Invoices()
+        public async Task<IActionResult> Invoice(string id, string returnUrl, string cacheKey)
         {
-            var invoices = await _invoiceServices.GetInvoicesAsync();
-            return View("Invoices", invoices);
-        }
+            Invoice invoice;
+            var cachedInvoices = await _invoiceCacheService.GetInvoiceItemsAsync(cacheKey);
+            if (cachedInvoices == null)
+            {
+                invoice = await _invoiceServices.GetInvoiceAsync(id);
+            }
+            else
+            {
+                invoice = _invoicesFormatter.Deserialize(cachedInvoices).FirstOrDefault(invoice => invoice.Id == id);
+            }
 
-        public async Task<IActionResult> Invoice(string id, string returnUrl)
-        {
-            var invoice = await _invoiceServices.GetInvoiceAsync(id);
-            return View(new InvoiceViewModel
+            InvoiceViewModel invoiceViewModel = new InvoiceViewModel
             {
                 Invoice = invoice,
                 ReturnUrl = returnUrl
-            });
+            };
+
+            return View(invoiceViewModel);
         }
 
         public async Task<IActionResult> InvoicesByNameAndDateRange(string companyName, string startDate, string endDate)
@@ -54,84 +66,29 @@ namespace PoseQBO.Controllors
 
         public async Task<IActionResult> InvoicesByDateRange(string startDate, string endDate)
         {
-            var cache = HttpContext.RequestServices.GetService<IDistributedCache>();
-            string cacheKey = $"invoices_{startDate}-{endDate}";
-            var cachedInvoices = await cache.GetAsync(cacheKey);
-
-            InvoicesViewModel invoicesViewModel = null;
-            BinaryFormatter formatter = new BinaryFormatter();
-            MemoryStream ms;
-
+            IEnumerable<Invoice> invoices;
+            var cachedInvoices = await _invoiceCacheService.GetInvoiceItemsAsync(startDate, endDate);
             if (cachedInvoices == null)
             {
-                var invoices = await _invoiceServices.GetInvoicesByDateRangeAsync(startDate, endDate);
-                invoicesViewModel = new InvoicesViewModel
-                {
-                    Invoices = invoices,
-                    StartDate = startDate,
-                    EndDate = endDate,
-                    ItemByQuantity = GetItemByQuantity(invoices)
-                };
-
-                using (ms = new MemoryStream())
-                {
-                    formatter.Serialize(ms, invoicesViewModel);
-                    cachedInvoices = ms.ToArray();
-                }
-                await cache.SetAsync(cacheKey, cachedInvoices);
+                invoices = await _invoiceServices.GetInvoicesByDateRangeAsync(startDate, endDate);
+                var serializedInvoices = _invoicesFormatter.Serializer(invoices);
+                await _invoiceCacheService.SetInvoiceItemsAsync(startDate, endDate, serializedInvoices);
             }
-
-            using (ms = new MemoryStream(cachedInvoices))
+            else
             {
-                invoicesViewModel = (InvoicesViewModel)formatter.Deserialize(ms);
+                invoices = _invoicesFormatter.Deserialize(cachedInvoices);
             }
+
+            InvoicesViewModel invoicesViewModel = new InvoicesViewModel
+            {
+                Invoices = invoices,
+                StartDate = startDate,
+                EndDate = endDate
+            };
+
+            ViewData["CacheKey"] = _invoiceCacheService.CacheKey;
 
             return View("Invoices", invoicesViewModel);
-        }
-
-        private IDictionary<string, int> GetItemByQuantity(IEnumerable<Invoice> invoices)
-        {
-            var itemByQuantityMap = new Dictionary<string, int>();
-
-            void GetLinesFromInvoice(IEnumerable<Invoice> invoices)
-            {
-                if (invoices.Count() == 0)
-                {
-                    return;
-                }
-
-                var lines = invoices.First().Line;
-
-                void CollectLineValues(IEnumerable<Line> lines)
-                {
-                    if (lines.Count() == 0)
-                    {
-                        return;
-                    }
-
-                    if (lines.First().AnyIntuitObject is SalesItemLineDetail lineItem)
-                    {
-                        var itemName = lineItem.ItemRef.name;
-                        var itemQyt = ((int)lineItem.Qty);
-
-                        if (!itemByQuantityMap.ContainsKey(itemName))
-                        {
-                            itemByQuantityMap.Add(itemName, itemQyt);
-                        }
-                        else
-                        {
-                            itemByQuantityMap[itemName] += itemQyt;
-                        }
-                    }
-                    CollectLineValues(lines.Skip(1));
-                }
-                CollectLineValues(lines);
-
-                GetLinesFromInvoice(invoices.Skip(1));
-            }
-            GetLinesFromInvoice(invoices);
-
-            return itemByQuantityMap;
         }
     }
 }
