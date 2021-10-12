@@ -33,7 +33,12 @@
             </table>
         </div>
         <div class="ml-1 px-3 py-3">
-            <a asp-action="Invoice" asp-route-id="@Model.Id" asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()" class="card-link">View Invoice</a>
+            <a asp-action="Invoice" 
+               asp-route-id="@Model.Id"
+               asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()"
+               asp-route-cacheKey="@ViewData["CacheKey"]" 
+               class="card-link">
+            View Invoice</a>
         </div>
         <div class="card-footer">
             <span class="h5">Create Time</span>
