@@ -18,7 +18,7 @@ namespace PoseQBO.Services.Caching
             _cache = cache;
         }
 
-        public string CacheKey { get => _cacheKey; set => _cacheKey = value; }
+        public string CacheKey { get => _cacheKey; private set => _cacheKey = value; }
 
         public async Task<byte[]> GetInvoiceItemsAsync(string cacheKey)
         {
@@ -27,12 +27,9 @@ namespace PoseQBO.Services.Caching
 
         public async Task<byte[]> GetInvoiceItemsAsync(string startDate, string endDate)
         {
-            _cacheKey = $"{KeyPrefix}_{startDate}-{endDate}";
             byte[] cachedItems = null;
-            if (!string.IsNullOrEmpty(_cacheKey))
-            {
-                cachedItems = await _cache.GetAsync(_cacheKey);
-            }
+            _cacheKey = !string.IsNullOrEmpty(_cacheKey) ? _cacheKey : $"{KeyPrefix}_{startDate}-{endDate}";
+            cachedItems = await _cache.GetAsync(_cacheKey);
             return cachedItems;
         }
 
