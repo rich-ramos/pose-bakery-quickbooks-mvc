@@ -11,6 +11,8 @@ namespace PoseQBO.Services.Caching.Interfaces
 
         Task<byte[]> GetInvoiceItemsAsync(string cacheKey);
         Task<byte[]> GetInvoiceItemsAsync(string startDate, string endDate);
+        Task<byte[]> GetInvoiceItemsAsync(string companyName, string startDate, string endDate);
         Task SetInvoiceItemsAsync(string startDate, string endDate, byte[] items);
+        Task SetInvoiceItemsAsync(string companyName, string startDate, string endDate, byte[] items);
     }
 }
