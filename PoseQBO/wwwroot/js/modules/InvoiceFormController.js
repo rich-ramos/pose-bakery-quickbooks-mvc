@@ -55,7 +55,7 @@
     }
 
     #isCompanyNameValid(companyName) {
-        const re = /^[a-zA-Z]{1,20}$/;
+        const re = /^[a-zA-Z0-9]{1,40}/;
         return (!re.test(companyName)) ? false : true;
     }
 
