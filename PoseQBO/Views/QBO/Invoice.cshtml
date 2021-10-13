@@ -7,7 +7,7 @@
     <div class="card-body">
         <table class="table table-borderless table-striped">
             <thead class="thead-dark">
-                <tr class="text-center">
+                <tr>
                     <th>Quantity</th>
                     <th>Item</th>
                 </tr>
@@ -15,7 +15,7 @@
             <tbody>
                 @foreach (var line in Model.Invoice.Line)
                 {
-                    <tr class="text-center">
+                    <tr>
                         @if (line.AnyIntuitObject is SalesItemLineDetail itemLine)
                         {
                             <td>
@@ -31,12 +31,12 @@
             </tbody>
         </table>
     </div>
-    <div class="card-footer text-center">
+    <div class="card-footer">
         <span class="h5">Create Time</span>
         <div>@Model.Invoice.MetaData.CreateTime</div>
     </div>
 </div>
 
-<div class="text-center">
-    <a class="btn btn-primary w-25" href="@Model.ReturnUrl">Back To Invoices</a>
+<div>
+    <a class="btn btn-primary" href="@Model.ReturnUrl">Back To Invoices</a>
 </div>
