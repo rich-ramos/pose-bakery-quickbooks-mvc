@@ -45,12 +45,12 @@ namespace PoseQBO.Services.QBO
             return _invoices;
         }
 
-        public async Task<IEnumerable<Invoice>> GetInvoicesByIdAndDateRangeAsync(string customerId, string startDate, string endDate)
+        public async Task<IEnumerable<Invoice>> GetInvoicesByCustomerRefAndDateRangeAsync(string customerRef, string startDate, string endDate)
         {
             await _apiServices.ApiCall(context =>
             {
                 var queryService = new QueryService<Invoice>(context);
-                var query = $"Select * From Invoice Where id = \'{customerId}\' And MetaData.CreateTime > \'{startDate}\' AND MetaData.CreateTime < \'{endDate}\'";
+                var query = $"Select * From Invoice Where CustomerRef = \'{customerRef}\' And MetaData.CreateTime > \'{startDate}\' AND MetaData.CreateTime < \'{endDate}\'";
                 _invoices = queryService.ExecuteIdsQuery(query).ToList();
             });
 
