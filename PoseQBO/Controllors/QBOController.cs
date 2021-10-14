@@ -2,14 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using PoseQBO.Models.ViewModels;
 using PoseQBO.Services.QBO.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Caching.Distributed;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
 using PoseQBO.Services.Caching.Interfaces;
 using PoseQBO.Services.Formatters;
 
@@ -39,14 +34,9 @@ namespace PoseQBO.Controllors
         {
             Invoice invoice;
             var cachedInvoices = await _invoiceCacheService.GetInvoiceItemsAsync(cacheKey);
-            if (cachedInvoices == null)
-            {
-                invoice = await _invoiceServices.GetInvoiceAsync(id);
-            }
-            else
-            {
-                invoice = _invoicesFormatter.Deserialize(cachedInvoices).FirstOrDefault(invoice => invoice.Id == id);
-            }
+            invoice = cachedInvoices == null
+                ? await _invoiceServices.GetInvoiceAsync(id)
+                : _invoicesFormatter.Deserialize(cachedInvoices).FirstOrDefault(invoice => invoice.Id == id);
 
             InvoiceViewModel invoiceViewModel = new InvoiceViewModel
             {
@@ -59,9 +49,30 @@ namespace PoseQBO.Controllors
 
         public async Task<IActionResult> InvoicesByNameAndDateRange(string companyName, string startDate, string endDate)
         {
-            var customerId = await _customerServices.GetCustomerIdAsync(companyName);
-            var invoices = await _invoiceServices.GetInvoicesByIdAndDateRangeAsync(customerId, startDate, endDate);
-            return View("Invoices", invoices);
+            IEnumerable<Invoice> invoices;
+            var cachedInvoices = await _invoiceCacheService.GetInvoiceItemsAsync(companyName, startDate, endDate);
+            if (cachedInvoices == null)
+            {
+                var customerId = await _customerServices.GetCustomerIdAsync(companyName);
+                invoices = await _invoiceServices.GetInvoicesByCustomerRefAndDateRangeAsync(customerId, startDate, endDate);
+                var serializedInvoices = _invoicesFormatter.Serializer(invoices);
+                await _invoiceCacheService.SetInvoiceItemsAsync(companyName, startDate, endDate, serializedInvoices);
+            }
+            else
+            {
+                invoices = _invoicesFormatter.Deserialize(cachedInvoices);
+            }
+
+            InvoicesViewModel invoicesViewModel = new InvoicesViewModel
+            {
+                Invoices = invoices,
+                StartDate = startDate,
+                EndDate = endDate,
+            };
+
+            ViewData["CacheKey"] = _invoiceCacheService.CacheKey;
+
+            return View("Invoices", invoicesViewModel);
         }
 
         public async Task<IActionResult> InvoicesByDateRange(string startDate, string endDate)
