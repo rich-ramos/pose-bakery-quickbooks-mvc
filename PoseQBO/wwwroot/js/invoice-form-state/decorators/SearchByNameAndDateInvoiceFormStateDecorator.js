@@ -1,9 +1,32 @@
 ﻿import InvoiceFormStateDecoratorBase from './base/InvoiceFormStateDecoratorBase.js';
 
 class SearchByNameAndDateInvoiceFormStateDecorator extends InvoiceFormStateDecoratorBase {
+    #nameAndDateActionAttributeValue = '/QBO/InvoicesByNameAndDateRange';
+
     constructor(invoiceFormState) {
         super(invoiceFormState);
-        const newFormState =
+        this.State = this.#getFormState();
+        this.Action = this.#nameAndDateActionAttributeValue;
+    }
+
+    get State() {
+        return super.State;
+    }
+
+    set State(state) {
+        super.State = state;
+    }
+
+    get Action() {
+        return super.Action;
+    }
+
+    set Action(action) {
+        super.Action = action;
+    }
+
+    #getFormState() {
+        const formState =
             `
                 <div class="form-row">
                     <div class="form-group col-md-6">
@@ -28,19 +51,8 @@ class SearchByNameAndDateInvoiceFormStateDecorator extends InvoiceFormStateDecor
                         </div>
                     </div>
                 </div>
-                <div class="text-center m-2">
-                    <button class="btn btn-primary text-center" type="submit">Submit</button>
-                </div>
             `;
-        this.State = newFormState;
-    }
-
-    get State() {
-        return super.State;
-    }
-
-    set State(state) {
-        super.State = state;
+        return formState;
     }
 }
 
