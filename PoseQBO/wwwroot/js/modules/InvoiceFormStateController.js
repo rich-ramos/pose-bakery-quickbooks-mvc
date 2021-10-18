@@ -1,22 +1,19 @@
-﻿import InvoiceFormState from "../invoice-form-state/component/InvoiceFormState.js";
+﻿import DefaultInvoiceFormState from "../invoice-form-state/component/DefaultInvoiceFormState.js";
 import FormProcessor from "./FormProcessor.js";
-import SearchByDateRangeInvoiceFormStateDecorator from "../invoice-form-state/decorators/SearchByDateRangeInvoiceFormStateDecorator.js";
-import SearchByNameAndDateInvoiceFormStateDecorator from "../invoice-form-state/decorators/SearchByNameAndDateInvoiceFormStateDecorator.js";
+import invoiceFormStateDecoratorFactory from './../invoice-form-state/decorators/factory/invoiceFormStateDecoratorFactory.js';
 
 class InvoiceFormStateController {
-    #linkId = 'name-link';
-    #nameAndDateActionAttributeValue = '/QBO/InvoicesByNameAndDateRange';
-    #dateRangeActionAttributeValue = '/QBO/InvoicesByDateRange';
 
     constructor() {
         this.form = document.querySelector('#invoiceForm');
-        this.invoiceFormState = new InvoiceFormState();
+        this.defaultInvoiceFormState = new DefaultInvoiceFormState();
         this.formProcessor = null;
         this.invoiceNavLinks = document.querySelectorAll('.invoice-nav-link');
         this.events();
     }
 
     events() {
+        document.addEventListener('DOMContentLoaded', (e) => this.initializeDefaultState(e));
         this.invoiceNavLinks.forEach((invoiceNavLink) => {
             invoiceNavLink.addEventListener('click', (e) => this.handleClick(e));
         });
@@ -27,21 +24,20 @@ class InvoiceFormStateController {
             invoiceNavLink.classList.remove('active');
         });
         e.target.classList.add('active');
-        this.changeFormState(e.target.id);
+        this.changeFormState(e.target.getAttribute('data-decorator'));
     }
 
-    changeFormState(id) {
-        if (id == this.#linkId) {
-            const nameAndDateInvoiceFormStateDecorator = new SearchByNameAndDateInvoiceFormStateDecorator(this.invoiceFormState);
-            this.formProcessor = new FormProcessor(this.form, nameAndDateInvoiceFormStateDecorator);
-            this.formProcessor.setFormState();
-            this.formProcessor.setActionAttributeValue(this.#nameAndDateActionAttributeValue);
-        } else {
-            const dateRangeInvoiceFormStateDecorator = new SearchByDateRangeInvoiceFormStateDecorator(this.invoiceFormState);
-            this.formProcessor = new FormProcessor(this.form, dateRangeInvoiceFormStateDecorator);
-            this.formProcessor.setFormState();
-            this.formProcessor.setActionAttributeValue(this.#dateRangeActionAttributeValue);
-        }
+    changeFormState(decorator) {
+        let invoiceFormStateDecoratorBase = invoiceFormStateDecoratorFactory.createInvoiceFormStateDecorator(decorator, this.defaultInvoiceFormState);
+        this.formProcessor = new FormProcessor(this.form, invoiceFormStateDecoratorBase);
+        this.formProcessor.setFormState();
+        this.formProcessor.setActionAttribute();
+    }
+
+    initializeDefaultState(e) {
+        this.formProcessor = new FormProcessor(this.form, this.defaultInvoiceFormState);
+        this.formProcessor.setFormState();
+        this.formProcessor.setActionAttribute();
     }
 }
 

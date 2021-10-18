@@ -2,14 +2,15 @@
     constructor(form, formStateBase) {
         this.form = form;
         this.formStateBase = formStateBase;
+        this.invoiceState = document.querySelector('.invoice-state');
     }
 
     setFormState() {
-        this.form.innerHTML = this.formStateBase.State;
+        this.invoiceState.innerHTML = this.formStateBase.State;
     }
 
-    setActionAttributeValue(value) {
-        this.form.setAttribute('action', value);
+    setActionAttribute() {
+        this.form.setAttribute('action', this.formStateBase.Action);
     }
 }
 

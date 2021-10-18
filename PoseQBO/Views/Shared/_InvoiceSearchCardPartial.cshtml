@@ -3,34 +3,19 @@
         <h5 class="card-title text-center">Search For Invoices</h5>
         <ul class="nav nav-pills">
             <li class="nav-item">
-                <a id="name-link" class="nav-link invoice-nav-link" href="#">
+                <a id="name-link" class="nav-link invoice-nav-link" data-decorator="SearchByNameAndDateInvoiceFormStateDecorator" href="#">
                     Name
                 </a>
             </li>
             <li class="nav-item">
-                <a id="date-link" class="nav-link invoice-nav-link active" href="#">
+                <a id="date-link" class="nav-link invoice-nav-link active" data-decorator="SearchByDateRangeInvoiceFormStateDecorator" href="#">
                     Date
                 </a>
             </li>
         </ul>
 
-        <form id="invoiceForm" class="m-3" asp-action="InvoicesByDateRange" method="get" >
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="startDate">Start Date</label>
-                    <input type="date" id="startDate" name="startDate" class="form-control" required />
-                    <div class="invalid-feedback">
-                        Start date must not be greater than end date or equal
-                    </div>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="endDate">End Date</label>
-                    <input type="date" id="endDate" name="endDate" class="form-control" required />
-                    <div class="invalid-feedback">
-                        Start date must not be greater than end date or equal.
-                    </div>
-                </div>
-            </div>
+        <form id="invoiceForm" class="m-3" method="get" >
+            <span class="invoice-state"></span>
             <div class="text-center m-2">
                 <button class="btn btn-primary w-25" type="submit">Submit</button>
             </div>
