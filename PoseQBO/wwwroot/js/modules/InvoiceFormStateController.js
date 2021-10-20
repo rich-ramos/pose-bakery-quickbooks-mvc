@@ -27,8 +27,8 @@ class InvoiceFormStateController {
         this.changeFormState(e.target.getAttribute('data-decorator'));
     }
 
-    changeFormState(decorator) {
-        let invoiceFormStateDecoratorBase = invoiceFormStateDecoratorFactory.createInvoiceFormStateDecorator(decorator, this.defaultInvoiceFormState);
+    changeFormState(state) {
+        let invoiceFormStateDecoratorBase = invoiceFormStateDecoratorFactory.createInvoiceFormStateDecorator(state, this.defaultInvoiceFormState);
         this.formProcessor = new FormProcessor(this.form, invoiceFormStateDecoratorBase);
         this.formProcessor.setFormState();
         this.formProcessor.setActionAttribute();

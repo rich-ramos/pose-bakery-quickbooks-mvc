@@ -11,10 +11,10 @@ class InvoiceFormStateDecoratorFactory {
     }
 
 
-    static createInvoiceFormStateDecorator(decorator, invoiceFormStateBase) {
+    static createInvoiceFormStateDecorator(decorator, arguments) {
         let decoratorBase = this.prototype.decoratorTypes[decorator];
 
-        return new decoratorBase(invoiceFormStateBase);
+        return new decoratorBase(arguments);
     }
 }
 
