@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PoseQBO.Models;
 using PoseQBO.Models.DataAccess;
+using PoseQBO.Models.Identity;
 using PoseQBO.Services.Caching;
 using PoseQBO.Services.Caching.Interfaces;
 using PoseQBO.Services.Formatters;
@@ -51,6 +53,13 @@ namespace PoseQBO
             services.AddSingleton(provider => Configuration);
 
             services.AddControllersWithViews();
+
+            services.AddDbContext<PoseIdentityContext>(opts =>
+            {
+                opts.UseSqlite(Configuration.GetConnectionString("PoseIdentityConnection"));
+            });
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<PoseIdentityContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
