@@ -10,7 +10,7 @@ namespace PoseQBO.Models.DataAccess
     {
         public TokensDbContext() { }
 
-        public TokensDbContext(DbContextOptions options) : base(options)
+        public TokensDbContext(DbContextOptions<TokensDbContext> options) : base(options)
         {
         }
 
