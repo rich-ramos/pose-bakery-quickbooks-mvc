@@ -24,7 +24,7 @@ class InvoiceFormStateController {
             invoiceNavLink.classList.remove('active');
         });
         e.target.classList.add('active');
-        this.changeFormState(e.target.getAttribute('data-decorator'));
+        this.changeFormState(e.target.getAttribute('data-state'));
     }
 
     changeFormState(state) {
