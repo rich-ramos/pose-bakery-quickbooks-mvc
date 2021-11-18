@@ -1,0 +1,20 @@
+﻿@model CreateModel
+
+<h5 class="bg-primary text-white text-center p-2">Create User</h5>
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="@Model.UserName"></label>
+        <input asp-for="@Model.UserName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.Email"></label>
+        <input asp-for="@Model.Email" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.Password"></label>
+        <input asp-for="@Model.Password" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <a asp-action="List" class="btn btn-secondary">Back</a>
+</form>
