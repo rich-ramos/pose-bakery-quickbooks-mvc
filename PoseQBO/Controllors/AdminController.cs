@@ -37,5 +37,48 @@ namespace PoseQBO.Controllors
             }
             return View(model);
         }
+
+        public async Task<IActionResult> Edit(string Id)
+        {
+            IdentityUser user = await _userManager.FindByIdAsync(Id);
+            if (user != null)
+                return View(user);
+            else
+                return RedirectToAction("List");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(string Id,
+            string userName,
+            string email,
+            string password)
+        {
+            if (ModelState.IsValid)
+            {
+                IdentityUser user = await _userManager.FindByIdAsync(Id);
+                user.UserName = userName;
+                user.Email = email;
+                IdentityResult result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded && !String.IsNullOrEmpty(password))
+                {
+                    await _userManager.RemovePasswordAsync(user);
+                    result = await _userManager.AddPasswordAsync(user, password);
+                }
+                if (result.Succeeded)
+                    return RedirectToAction("List");
+                foreach (IdentityError err in result.Errors)
+                    ModelState.AddModelError("", err.Description);
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(string Id)
+        {
+            IdentityUser user = await _userManager.FindByIdAsync(Id);
+            if (user != null)
+                await _userManager.DeleteAsync(user);
+            return RedirectToAction("List");
+        }
     }
 }
