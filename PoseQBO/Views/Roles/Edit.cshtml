@@ -1,0 +1,56 @@
+﻿@model RoleEditModel
+
+<h5 class="bg-primary text-white text-center p-2">Edit Role: @Model.Role.Name</h5>
+
+<form method="post">
+    <input type="hidden" name="rolename" value="@Model.Role.Name" />
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <h5 class="bg-secondary text-white p-2">Members</h5>
+    <table class="table table-sm table-striped table-bordered">
+        <thead><tr><th>User</th><th>Email</th><th></th></tr></thead>
+        <tbody>
+            @if (Model.Members.Count() == 0)
+            {
+                <tr><td colspan="3" class="text-center">No members</td></tr>
+            }
+            @foreach (IdentityUser user in Model.Members)
+            {
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    <td>
+                        <button asp-route-userid="@user.Id"
+                                class="btn btn-primary btn-sm" type="submit">
+                            Change
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h5 class="bg-secondary text-white p-2">Non-Members</h5>
+    <table class="table table-sm table-striped table-bordered">
+        <thead><tr><th>User</th><th>Email</th><th></th></tr></thead>
+        <tbody>
+            @if (Model.NonMembers.Count() == 0)
+            {
+                <tr><td colspan="3" class="text-center">Non non-members</td></tr>
+            }
+            @foreach (IdentityUser user in Model.NonMembers)
+            {
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    <td>
+                        <button asp-route-userid="@user.Id"
+                                class="btn btn-primary btn-sm">
+                            Change
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
+<a class="btn btn-secondary" asp-action="List">Back</a>
