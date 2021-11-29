@@ -58,8 +58,20 @@ namespace PoseQBO
             {
                 opts.UseSqlite(Configuration.GetConnectionString("PoseIdentityConnection"));
             });
+
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<PoseIdentityContext>();
+
+            services.Configure<IdentityOptions>(opts =>
+            {
+                opts.Password.RequiredLength = 6;
+                opts.Password.RequireNonAlphanumeric = false;
+                opts.Password.RequireLowercase = false;
+                opts.Password.RequireUppercase = false;
+                opts.Password.RequireDigit = false;
+                opts.User.RequireUniqueEmail = true;
+                opts.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyz";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
