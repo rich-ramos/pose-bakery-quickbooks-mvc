@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PoseQBO.Models.ViewModels;
 using System;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace PoseQBO.Controllors
 {
+    [Authorize(Roles = "Admins")]
     public class RolesController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
