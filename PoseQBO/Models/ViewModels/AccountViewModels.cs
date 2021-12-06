@@ -18,9 +18,4 @@ namespace PoseQBO.Models.ViewModels
 
         public string ReturnUrl { get; set; }
     }
-
-    public class DetailsModel
-    {
-        public IdentityUser IdentityUser { get; set; }
-    }
 }
