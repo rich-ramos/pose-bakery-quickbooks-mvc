@@ -9,11 +9,14 @@
                 <li class="nav-item">
                     <a class="nav-link" asp-controller="Connect" asp-action="Login">Connect</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="QBO" asp-action="Index">
-                        Invoices
-                    </a>
-                </li>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="QBO" asp-action="Index">
+                            Invoices
+                        </a>
+                    </li>
+                }
             </ul>
         </div>
     </div>
