@@ -7,9 +7,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using PoseQBO.Services.Caching.Interfaces;
 using PoseQBO.Services.Formatters;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PoseQBO.Controllors
 {
+    [Authorize]
     public class QBOController : Controller
     {
         private readonly IInvoiceServices _invoiceServices;

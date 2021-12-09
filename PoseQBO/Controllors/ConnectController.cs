@@ -1,4 +1,5 @@
 ﻿using Intuit.Ipp.OAuth2PlatformClient;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using PoseQBO.Models;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace PoseQBO.Controllors
 {
+    [Authorize]
     public class ConnectController : Controller
     {
         private readonly TokensDbContext _tokens;
