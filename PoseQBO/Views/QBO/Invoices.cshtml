@@ -7,7 +7,7 @@
             <div class="h4">From: @Model.StartDate To: @Model.EndDate</div>
         </div>
         <div class="card-body">
-            <div class="row row-cols-1 row-cols-md-5">
+            <div class="row row-cols-1 row-cols-md-4">
                 @foreach (var invoice in Model.Invoices)
                 {
                     <partial name="_InvoiceSummaryPartial" for="@invoice" />
