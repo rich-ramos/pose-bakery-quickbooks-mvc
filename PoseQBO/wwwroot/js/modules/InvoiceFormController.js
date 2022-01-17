@@ -1,10 +1,13 @@
-﻿class InvoiceFormController {
+﻿import LoadingSpinner from "./LoadingSpinner.js";
+
+class InvoiceFormController {
     #formControlErrorClass = 'is-invalid';
 
     constructor() {
         this.form = document.querySelector('#invoiceForm');
         this.invalidFormFields = [];
         this.events();
+        this.loadingSpinner = new LoadingSpinner();
     }
 
     events() {
@@ -33,7 +36,9 @@
             this.#addClickEventListenerToFormFields(this.invalidFormFields);
             this.#clearInvalidFromFieldsArray();
             e.preventDefault();
+            return;
         }
+        this.loadingSpinner.showSpinner();
     }
 
     handleClick(e) {
