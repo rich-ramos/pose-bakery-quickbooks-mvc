@@ -1,4 +1,4 @@
-﻿import DefaultInvoiceFormState from "../invoice-form-state/component/DefaultInvoiceFormState.js";
+﻿import DefaultInvoiceFormState from '../invoice-form-state/component/DefaultInvoiceFormState.js';
 import FormProcessor from "./FormProcessor.js";
 import invoiceFormStateDecoratorFactory from './../invoice-form-state/decorators/factory/invoiceFormStateDecoratorFactory.js';
 
