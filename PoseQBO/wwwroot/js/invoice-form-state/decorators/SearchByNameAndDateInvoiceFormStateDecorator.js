@@ -40,14 +40,14 @@ class SearchByNameAndDateInvoiceFormStateDecorator extends InvoiceFormStateDecor
                         <label for="startDate">Start Date</label>
                         <input type="date" id="startDate" name="startDate" class="form-control" required />
                         <div class="invalid-feedback">
-                            Start date must not be greater than end date or equal
+                            Start date must not be greater than or equal to end date.
                         </div>
                     </div>
                     <div class="col-md-3 form-group">
                         <label for="endDate">End Date</label>
                         <input type="date" id="endDate" name="endDate" class="form-control" required />
                         <div class="invalid-feedback">
-                            End date must not be less than start date or equal
+                            End date must not be less than or equal to start date.
                         </div>
                     </div>
                 </div>
