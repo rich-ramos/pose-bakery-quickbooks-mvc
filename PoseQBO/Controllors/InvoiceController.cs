@@ -12,14 +12,14 @@ using Microsoft.AspNetCore.Authorization;
 namespace PoseQBO.Controllors
 {
     [Authorize]
-    public class QBOController : Controller
+    public class InvoiceController : Controller
     {
         private readonly IInvoiceServices _invoiceServices;
         private readonly ICustomerServices _customerServices;
         private readonly IInvoiceCacheService _invoiceCacheService;
         private readonly InvoicesFormatter _invoicesFormatter;
 
-        public QBOController(IInvoiceServices invoiceServices, ICustomerServices customerServices, IInvoiceCacheService invoiceCacheService, InvoicesFormatter invoicesFormatter)
+        public InvoiceController(IInvoiceServices invoiceServices, ICustomerServices customerServices, IInvoiceCacheService invoiceCacheService, InvoicesFormatter invoicesFormatter)
         {
             _invoiceServices = invoiceServices;
             _customerServices = customerServices;
@@ -29,7 +29,7 @@ namespace PoseQBO.Controllors
 
         public IActionResult Index()
         {
-            return View("QBO");
+            return View();
         }
 
         public async Task<IActionResult> Invoice(string id, string returnUrl, string cacheKey)
