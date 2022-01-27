@@ -91,7 +91,12 @@ namespace PoseQBO
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllerRoute(
+                    name: "Default",
+                    pattern: "{controller=Connect}/{action=Index}",
+                    defaults: null,
+                    constraints: null,
+                    dataTokens: null);
             });
             IdentitySeedData.CreateAdminAccount(app.ApplicationServices, Configuration);
         }
