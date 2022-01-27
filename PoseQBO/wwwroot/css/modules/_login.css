@@ -1,0 +1,46 @@
+﻿@import "../base/_global.css";
+
+.login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.login__form {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+    transform: translateY(30%);
+}
+
+.login__image {
+    width: 200px;
+    height: 100px;
+}
+
+.login__form .form-control {
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    padding: .625rem;
+    font-size: 1rem;
+}
+
+.login__form .form-control:focus {
+    z-index: 2;
+}
+
+.login__form input[id="inputUserName"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.login__form input[id="inputPassword"] {
+    margin-bottom: -1px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
