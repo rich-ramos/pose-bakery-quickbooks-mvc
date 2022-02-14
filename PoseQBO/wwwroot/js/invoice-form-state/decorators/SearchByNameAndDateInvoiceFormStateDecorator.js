@@ -1,7 +1,7 @@
 ﻿import InvoiceFormStateDecoratorBase from './base/InvoiceFormStateDecoratorBase.js';
 
 class SearchByNameAndDateInvoiceFormStateDecorator extends InvoiceFormStateDecoratorBase {
-    #nameAndDateActionAttributeValue = '/QBO/InvoicesByNameAndDateRange';
+    #nameAndDateActionAttributeValue = '/Invoice/InvoicesByNameAndDateRange';
 
     constructor(invoiceFormState) {
         super(invoiceFormState);

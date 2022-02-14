@@ -1,7 +1,7 @@
 ﻿import InvoiceFormStateBase from './base/InvoiceFormStateBase.js';
 
 class DefaultInvoiceFormState extends InvoiceFormStateBase {
-    #defaultActionAttribute = '/QBO/InvoicesByDateRange';
+    #defaultActionAttribute = '/Invoice/InvoicesByDateRange';
 
     constructor() {
         super();

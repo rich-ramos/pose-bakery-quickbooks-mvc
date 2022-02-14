@@ -1,7 +1,7 @@
 ﻿import InvoiceFormStateDecoratorBase from './base/InvoiceFormStateDecoratorBase.js';
 
 class SearchByDateRangeInvoiceFormStateDecorator extends InvoiceFormStateDecoratorBase {
-    #dateRangeActionAttributeValue = '/QBO/InvoicesByDateRange';
+    #dateRangeActionAttributeValue = '/Invoice/InvoicesByDateRange';
 
     constructor(invoiceFormState) {
         super(invoiceFormState);
