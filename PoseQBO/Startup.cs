@@ -14,6 +14,7 @@ using PoseQBO.Services.Caching.Interfaces;
 using PoseQBO.Services.Formatters;
 using PoseQBO.Services.QBO;
 using PoseQBO.Services.QBO.Interfaces;
+using System;
 
 namespace PoseQBO
 {
@@ -41,19 +42,6 @@ namespace PoseQBO
                 options.UseSqlite(Configuration.GetConnectionString("DBConnectionString"));
             });
 
-            services.AddDistributedMemoryCache();
-
-            services.AddScoped<IApiServices, QBOApiServices>();
-            services.AddScoped<IInvoiceServices, QBOInvoiceServices>();
-            services.AddScoped<ICustomerServices, QBOCustomerServices>();
-            services.AddScoped<IInvoiceCacheService, MemoryInvoiceCacheService>();
-            services.AddScoped<InvoicesFormatter>();
-            services.Configure<OAuth2Keys>(Configuration.GetSection("OAuth2Keys"));
-
-            services.AddSingleton(provider => Configuration);
-
-            services.AddControllersWithViews();
-
             services.AddDbContext<PoseIdentityContext>(opts =>
             {
                 opts.UseSqlite(Configuration.GetConnectionString("PoseIdentityConnection"));
@@ -72,6 +60,24 @@ namespace PoseQBO
                 opts.User.RequireUniqueEmail = true;
                 opts.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyz";
             });
+
+            services.AddScoped<IApiServices, QBOApiServices>();
+            services.AddScoped<IInvoiceServices, QBOInvoiceServices>();
+            services.AddScoped<ICustomerServices, QBOCustomerServices>();
+            services.AddScoped<IInvoiceCacheService, MemoryInvoiceCacheService>();
+            services.AddScoped<InvoicesFormatter>();
+            services.Configure<OAuth2Keys>(Configuration.GetSection("OAuth2Keys"));
+            services.AddSingleton(provider => Configuration);
+
+            services.AddControllersWithViews();
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.IsEssential = true;
+            });
+            services.AddScoped(sp => SessionQBOLoginResultManager.GetLoginResult(sp));
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -84,6 +90,7 @@ namespace PoseQBO
 
             app.UseStatusCodePages();
             app.UseStaticFiles();
+            app.UseSession();
             app.UseRouting();
 
             app.UseAuthentication();
@@ -93,7 +100,7 @@ namespace PoseQBO
             {
                 endpoints.MapControllerRoute(
                     name: "Default",
-                    pattern: "{controller=Connect}/{action=Index}",
+                    pattern: "{controller=Connect}/{action=Home}",
                     defaults: null,
                     constraints: null,
                     dataTokens: null);
