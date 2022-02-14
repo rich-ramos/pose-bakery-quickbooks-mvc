@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PoseQBO.Infrastructure;
+using PoseQBO.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,15 +10,16 @@ namespace PoseQBO.Components
 {
     public class NavigationMenuViewComponent : ViewComponent
     {
+        private ILoginResultManager _loginResultManager;
 
-        public NavigationMenuViewComponent()
+        public NavigationMenuViewComponent(ILoginResultManager loginResultManager)
         {
-
+            _loginResultManager = loginResultManager;
         }
 
         public IViewComponentResult Invoke()
         {
-            return View();
+            return View(_loginResultManager);
         }
     }
 }

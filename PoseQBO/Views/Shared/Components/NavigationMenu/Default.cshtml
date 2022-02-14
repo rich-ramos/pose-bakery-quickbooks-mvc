@@ -1,4 +1,6 @@
-﻿<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom box-shadow mb-3">
+﻿@model ILoginResultManager
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom box-shadow mb-3">
     <div class="container">
         <span class="navbar-brand mb-0 h1">Pose Bakery</span>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
@@ -12,10 +14,15 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <li class="nav-item">
-                        <a class="nav-link" asp-controller="QBO" asp-action="Index">
-                            Invoices
-                        </a>
+                        <a class="nav-link" asp-controller="Account" asp-action="Logout">Logout</a>
                     </li>
+                    if (Model.GetIsConnected())
+
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Invoice" asp-action="Menu">Invoices</a>
+                        </li>
+                    }
                 }
             </ul>
         </div>

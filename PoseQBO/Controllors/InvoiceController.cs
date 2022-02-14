@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using PoseQBO.Services.Caching.Interfaces;
 using PoseQBO.Services.Formatters;
 using Microsoft.AspNetCore.Authorization;
+using PoseQBO.Models;
+using PoseQBO.Infrastructure;
 
 namespace PoseQBO.Controllors
 {
@@ -18,17 +20,26 @@ namespace PoseQBO.Controllors
         private readonly ICustomerServices _customerServices;
         private readonly IInvoiceCacheService _invoiceCacheService;
         private readonly InvoicesFormatter _invoicesFormatter;
+        private readonly ILoginResultManager _loginResultManager;
 
-        public InvoiceController(IInvoiceServices invoiceServices, ICustomerServices customerServices, IInvoiceCacheService invoiceCacheService, InvoicesFormatter invoicesFormatter)
+        public InvoiceController(
+            IInvoiceServices invoiceServices,
+            ICustomerServices customerServices,
+            IInvoiceCacheService invoiceCacheService,
+            InvoicesFormatter invoicesFormatter,
+            ILoginResultManager loginResultManager)
         {
             _invoiceServices = invoiceServices;
             _customerServices = customerServices;
             _invoiceCacheService = invoiceCacheService;
             _invoicesFormatter = invoicesFormatter;
+            _loginResultManager = loginResultManager;
         }
 
-        public IActionResult Index()
+        public IActionResult Menu()
         {
+            if (!_loginResultManager.GetIsConnected())
+                RedirectToAction("Home", "Connect");
             return View();
         }
 

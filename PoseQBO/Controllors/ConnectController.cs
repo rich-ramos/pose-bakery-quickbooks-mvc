@@ -1,6 +1,8 @@
 ﻿using Intuit.Ipp.OAuth2PlatformClient;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using PoseQBO.Models;
 using PoseQBO.Models.DataAccess;
@@ -14,12 +16,14 @@ namespace PoseQBO.Controllors
     public class ConnectController : Controller
     {
         private readonly TokensDbContext _tokens;
+        private readonly ILoginResultManager _loginResultManager;
         private readonly OAuth2Keys _auth2Keys;
         private OAuth2Client _oAuth2Client;
 
-        public ConnectController(TokensDbContext tokens, IOptions<OAuth2Keys> auth2Keys)
+        public ConnectController(TokensDbContext tokens, IOptions<OAuth2Keys> auth2Keys, ILoginResultManager loginResultManager)
         {
             _tokens = tokens;
+            _loginResultManager = loginResultManager;
             _auth2Keys = auth2Keys.Value;
         }
 
@@ -37,7 +41,11 @@ namespace PoseQBO.Controllors
             if (state.Count > 0 && !string.IsNullOrEmpty(code))
             {
                 await GetAuthTokensAsync(code, realmId);
-                return RedirectToAction("Index", "QBO");
+                var error = _loginResultManager.CanSetIsConnected();
+                if (error != null)
+                    return View(error); // TODO Add a view to display errors from _loginResultManager
+                _loginResultManager.SetIsConnected(true);
+                return RedirectToAction("Menu", "Invoice");
             }
 
             return RedirectToAction("Home", "Connect");
@@ -85,7 +93,8 @@ namespace PoseQBO.Controllors
                     RefreshToken = tokenResponse.RefreshToken
                 });
             }
-            else if (!token.RefreshToken.Equals(tokenResponse.RefreshToken)) {
+            else if (!token.RefreshToken.Equals(tokenResponse.RefreshToken))
+            {
                 if (token.RealmId == realmId)
                 {
                     token.RefreshToken = tokenResponse.RefreshToken;
