@@ -9,13 +9,13 @@
 </head>
 <body>
     <header>
-        <vc:navigation-menu  />
+        <vc:navigation-menu />
     </header>
     <div>
         <div class="container">
             @RenderBody()
+            @RenderSection("invoices", false)
         </div>
-        @RenderSection("invoices", false)
     </div>
 
     <script src="~/lib/jquery/jquery.min.js"></script>
